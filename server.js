@@ -1,13 +1,19 @@
 const http = require('http');
+const fs = require('fs');
 
 
 const server = http.createServer((req, resp) => {
     resp.setHeader('Content-Type', 'text/html');
+    fs.readFile('./views/home.html', (err, data) => {
+        if (err) {
+            console.log(err)
+        } else {
+            resp.write(data);
+        }
+        
+        resp.end();
+    })
 
-    resp.write('<h1>Hello NodeJs</h1>');
-    resp.write('<p>Hi There</p>')
-
-    resp.end();
 })
 
 server.listen(3000, 'localhost', () => {
