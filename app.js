@@ -1,9 +1,13 @@
 const express = require('express');
-
+let morgan = require('morgan')
 const app = express();
 
 app.set('views', './views')
 app.set('view engine', 'ejs')
+
+// package name - morgan
+app.use(morgan('dev'))
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
 
@@ -13,25 +17,29 @@ app.get('/', (req, res) => {
         { title: 'Blog title 3', intro: 'this is blog intro 3'},
     ];
     res.render('home', {
-        blogs
+        blogs,
+        title: "Home"
     })
 })
 
 app.get('/about', (req, res) => {
-    res.render('about')
+    res.render('about', {
+        title: "About"
+    })
 })
 
 
 app.get('/contact', (req, res) => {
-    res.render('contact')
+    res.render('contact', {
+        title: "Contact"
+    })
 })
 
-app.get('/about-us', (req, res) => {
-    res.redirect('/about');
-})
 
 app.use((req, res) => {
-    res.status(404).render('404page');
+    res.status(404).render('404page', {
+        title: "404 Not found"
+    });
 })
 
 app.listen(3000, () => {

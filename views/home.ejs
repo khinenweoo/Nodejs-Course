@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
 
+<%- include('./components/head.ejs') %>
 <body>
+    <!-- use - dash instead of = equal sign when we want to escape html but must be secure code -->
+    <%- include('./components/navbar.ejs') %>
 
-    <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
-    </nav>
-    <h1> Blogg page Express Js</h1>
+    <div class="container">
 
-    <% if(blogs.length) {  %>
-        <% blogs.forEach(blog => {  %>
-            <h3><%= blog.title %></h3>
-            <p><%= blog.intro %></p>
-        <% })  %>
-    <% } else { %>
-        <h3>No Blogs found.</h3>
-    <% } %>
+        <% if(blogs.length) {  %>
+            <% blogs.forEach(blog => {  %>
+               <div class="blog-card">
+                    <h3><%= blog.title %></h3>
+                    <p><%= blog.intro %></p>
+               </div>
+            <% })  %>
+        <% } else { %>
+            <h3>No Blogs found.</h3>
+        <% } %>
+    </div>
+
 
     
 
