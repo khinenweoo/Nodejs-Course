@@ -1,6 +1,20 @@
 const express = require('express');
-let morgan = require('morgan')
+let morgan = require('morgan');
+const mongoose = require('mongoose');
+const Blog = require('./models/Blog');
+
 const app = express();
+
+// db url
+let mongoUrl = "mongodb+srv://khinenwe:khine1234@cluster0.j6l35.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+mongoose.connect(mongoUrl).then(() => {
+    console.log('connected to Db')
+    app.listen(3000, () => {
+        console.log('app is running on port 3000');
+    })
+}).catch((error) => {
+    console.log(error)
+})
 
 app.set('views', './views')
 app.set('view engine', 'ejs')
@@ -9,13 +23,26 @@ app.set('view engine', 'ejs')
 app.use(morgan('dev'))
 app.use(express.static('public'))
 
-app.get('/', (req, res) => {
+app.get('/add-blog', async (req, res) => {
+    let blog = new Blog({
+        title : "blog title 3",
+        intro : "blog intro 3",
+        body : "blog body 3"
+    });
 
-    let blogs = [
-        { title: 'Blog title 1', intro: 'this is blog intro 1'},
-        { title: 'Blog title 2', intro: 'this is blog intro 2'},
-        { title: 'Blog title 3', intro: 'this is blog intro 3'},
-    ];
+    await blog.save();
+    res.send('blog saved')
+})
+
+app.get('/single-blog', async (req, res) => {
+    let blog = await Blog.findById('66c9c2e2f21730559f4f06c7');
+    res.json(blog);
+
+})
+app.get('/', async (req, res) => {
+
+    let blogs = await Blog.find().sort({createdAt: -1})
+    console.log(blogs);
     res.render('home', {
         blogs,
         title: "Home"
@@ -42,6 +69,3 @@ app.use((req, res) => {
     });
 })
 
-app.listen(3000, () => {
-    console.log('app is running on port 3000');
-})
