@@ -6,7 +6,7 @@ const Blog = require('./models/Blog');
 const app = express();
 
 // db url
-let mongoUrl = "mongodb+srv://khinenwe:khine1234@cluster0.j6l35.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+let mongoUrl = process.env.MONGO_URL;
 mongoose.connect(mongoUrl).then(() => {
     console.log('connected to Db')
     app.listen(3000, () => {
